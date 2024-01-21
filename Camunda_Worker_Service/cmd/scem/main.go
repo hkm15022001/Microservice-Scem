@@ -37,16 +37,6 @@ func main() {
 	CommonService.MappingGormDBConnection(gormDB)
 	CommonMessage.MappingGormDBConnection(gormDB)
 
-	if err := handler.RefreshDatabase(); err != nil {
-		log.Println(err)
-		os.Exit(1)
-	}
-	if err := handler.MigrationDatabase(); err != nil {
-		log.Println(err)
-		os.Exit(1)
-	}
-	log.Print("Database refreshed!")
-
 	if os.Getenv("STATE_SERVICE") == "1" {
 		connectZeebeClient()
 	}
