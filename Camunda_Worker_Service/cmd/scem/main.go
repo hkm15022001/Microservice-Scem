@@ -3,12 +3,7 @@ package main
 import (
 	"log"
 	"os"
-	"sync"
 
-	grpc "github.com/hkm15022001/Supply-Chain-Event-Management/api/grpc"
-	"github.com/hkm15022001/Supply-Chain-Event-Management/api/kafka"
-	"github.com/hkm15022001/Supply-Chain-Event-Management/api/middleware"
-	httpServer "github.com/hkm15022001/Supply-Chain-Event-Management/api/server"
 	"github.com/hkm15022001/Supply-Chain-Event-Management/internal/handler"
 	CommonService "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/common"
 	CommonMessage "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/common_message"
@@ -24,18 +19,6 @@ func main() {
 		if err != nil {
 			log.Fatal("Error loading .env file")
 		}
-	}
-
-	// Initial web auth middleware
-	if os.Getenv("RUN_WEB_AUTH") == "yes" {
-		runWebAuth()
-	}
-
-	// Select app auth middleware
-	if os.Getenv("RUN_APP_AUTH") == "redis" {
-		runAppAuthRedis()
-	} else if os.Getenv("RUN_APP_AUTH") == "buntdb" {
-		log.Println("Selected BuntDB to run app auth")
 	}
 
 	// Select database
@@ -68,48 +51,6 @@ func main() {
 		connectZeebeClient()
 	}
 
-	// WaitGroup để chờ cả hai server kết thúc
-	var wg sync.WaitGroup
-	wg.Add(3)
-	go func() {
-		defer wg.Done()
-		brokerList := []string{os.Getenv("KAFKA_BOOTSTRAP_SERVER")}
-		topic := "order-topic"
-		kafka.StartProducer(brokerList, topic)
-	}()
-
-	// Khởi chạy HTTP server trong một goroutine
-	go func() {
-		defer wg.Done()
-		httpServer.RunServer()
-	}()
-
-	// Khởi chạy gRPC server trong một goroutine
-	go func() {
-		defer wg.Done()
-		grpc.RunServer(os.Getenv("GRPC_URL"))
-	}()
-
-	// Đợi cho cả hai server kết thúc
-	wg.Wait()
-}
-
-// Source code: https://www.devdungeon.com/content/working-files-go#read_all
-func runWebAuth() {
-	sessionKey := []byte(os.Getenv("SESSION_KEY"))
-	if err := middleware.RunWebAuth(sessionKey); err != nil {
-		log.Println(err)
-		os.Exit(1)
-	}
-	log.Println("Web authenticate activated!")
-}
-
-func runAppAuthRedis() {
-	if err := middleware.RunAppAuthRedis(); err != nil {
-		log.Println(err)
-		os.Exit(1)
-	}
-	log.Println("Selected Redis to run app auth!")
 }
 
 func connectPostgress() {
