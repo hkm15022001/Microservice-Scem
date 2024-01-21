@@ -16,8 +16,7 @@ COPY ./storage/private/zeebe .
 
 WORKDIR /storage/public/upload/images
 COPY ./storage/public/upload/images .
-WORKDIR /db
-COPY ./db .
+
 # Create necessary directories
 WORKDIR /build
 
@@ -44,7 +43,7 @@ COPY --from=builder /golang_scem_binary /main
 
 # Copy storage and db directories from the builder stage
 COPY --from=builder /storage /storage
-COPY --from=builder /db /db
+
 # Expose necessary ports
 EXPOSE 5000
 EXPOSE 5001
