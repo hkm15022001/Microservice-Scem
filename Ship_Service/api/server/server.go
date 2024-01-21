@@ -60,7 +60,7 @@ func webRouter() http.Handler {
 	e := gin.Default()
 
 	e.Static("/scem-ship/api/images", os.Getenv("IMAGE_FILE_PATH"))
-	e.Static("/scem-ship//api/qrcode", os.Getenv("QR_CODE_FILE_PATH"))
+	e.Static("/scem-ship/api/qrcode", os.Getenv("QR_CODE_FILE_PATH"))
 	// Set a lower memory limit for multipart forms (default is 32 MiB)
 	e.MaxMultipartMemory = 8 << 20 // 8 MiB
 
@@ -77,8 +77,8 @@ func webRouter() http.Handler {
 
 func appRouter() http.Handler {
 	e := gin.Default()
-	e.Static("/scem-ship//api/images", os.Getenv("IMAGE_FILE_PATH"))
-	api := e.Group("/scem-ship//api")
+	e.Static("/scem-ship/api/images", os.Getenv("IMAGE_FILE_PATH"))
+	api := e.Group("/scem-ship/api")
 	router.AppOrderShipRoutes(api)
 	return e
 }
