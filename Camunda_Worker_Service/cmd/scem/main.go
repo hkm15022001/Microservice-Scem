@@ -3,7 +3,9 @@ package main
 import (
 	"log"
 	"os"
+	"sync"
 
+	httpServer "github.com/hkm15022001/Supply-Chain-Event-Management/api/server"
 	"github.com/hkm15022001/Supply-Chain-Event-Management/internal/handler"
 	CommonService "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/common"
 	CommonMessage "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/common_message"
@@ -40,7 +42,13 @@ func main() {
 	if os.Getenv("STATE_SERVICE") == "1" {
 		connectZeebeClient()
 	}
-
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		httpServer.RunServer()
+	}()
+	wg.Wait()
 }
 
 func connectPostgress() {
