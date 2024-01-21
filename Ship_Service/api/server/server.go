@@ -59,45 +59,26 @@ func RunServer() {
 func webRouter() http.Handler {
 	e := gin.Default()
 
-	e.Static("/api/images", os.Getenv("IMAGE_FILE_PATH"))
-	e.Static("/api/qrcode", os.Getenv("QR_CODE_FILE_PATH"))
+	e.Static("/scem-ship/api/images", os.Getenv("IMAGE_FILE_PATH"))
+	e.Static("/scem-ship//api/qrcode", os.Getenv("QR_CODE_FILE_PATH"))
 	// Set a lower memory limit for multipart forms (default is 32 MiB)
 	e.MaxMultipartMemory = 8 << 20 // 8 MiB
 
-	api := e.Group("/api")
-	router.WebAuthRoutes(api)
+	api := e.Group("/scem-ship/api")
+
 	// Active web auth
 	if os.Getenv("RUN_WEB_AUTH") == "yes" {
 		api.Use(middleware.ValidateWebSession())
 	}
-	router.WebUserRoutes(api)
-	router.WebOrderRoutes(api)
+
 	router.WebOrderShipRoutes(api)
 	return e
 }
 
 func appRouter() http.Handler {
 	e := gin.Default()
-	e.Static("/api/images", os.Getenv("IMAGE_FILE_PATH"))
-
-	fcmAuth := e.Group("/fcm-auth")
-	router.AppFMCToken(fcmAuth)
-
-	api := e.Group("/api")
-	appAuth := e.Group("/app-auth")
-
-	// Select app auth database
-	if os.Getenv("RUN_APP_AUTH") == "redis" {
-		router.AppAuthRedisRoutes(appAuth)
-		api.Use(middleware.ValidateAppTokenRedis())
-
-	} else if os.Getenv("RUN_APP_AUTH") == "buntdb" {
-		router.AppAuthBuntDBRoutes(appAuth)
-		api.Use(middleware.ValidateAppTokenBuntDB())
-
-	}
-	router.AppUserRoutes(api)
-	router.AppOrderRoutes(api)
+	e.Static("/scem-ship//api/images", os.Getenv("IMAGE_FILE_PATH"))
+	api := e.Group("/scem-ship//api")
 	router.AppOrderShipRoutes(api)
 	return e
 }

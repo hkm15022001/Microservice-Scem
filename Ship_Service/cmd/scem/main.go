@@ -12,9 +12,7 @@ import (
 	"github.com/hkm15022001/Supply-Chain-Event-Management/internal/handler"
 	CommonService "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/common"
 	CommonMessage "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/common_message"
-	ZBMessage "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/zeebe/message"
-	ZBWorker "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/zeebe/worker"
-	ZBWorkflow "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/zeebe/workflow"
+
 	"github.com/joho/godotenv"
 )
 
@@ -54,28 +52,25 @@ func main() {
 	CommonService.MappingGormDBConnection(gormDB)
 	CommonMessage.MappingGormDBConnection(gormDB)
 
-	if err := handler.RefreshDatabase(); err != nil {
-		log.Println(err)
-		os.Exit(1)
-	}
-	if err := handler.MigrationDatabase(); err != nil {
-		log.Println(err)
-		os.Exit(1)
-	}
-	log.Print("Database refreshed!")
-
-	if os.Getenv("STATE_SERVICE") == "1" {
-		connectZeebeClient()
-	}
+	// if err := handler.RefreshDatabase(); err != nil {
+	// 	log.Println(err)
+	// 	os.Exit(1)
+	// }
+	// if err := handler.MigrationDatabase(); err != nil {
+	// 	log.Println(err)
+	// 	os.Exit(1)
+	// }
+	// log.Print("Database refreshed!")
 
 	// WaitGroup để chờ cả hai server kết thúc
 	var wg sync.WaitGroup
 	wg.Add(3)
+
 	go func() {
 		defer wg.Done()
 		brokerList := []string{os.Getenv("KAFKA_BOOTSTRAP_SERVER")}
-		topic := "order-topic"
-		kafka.StartProducer(brokerList, topic)
+		longship_topic := "longship-topic"
+		kafka.StartConsumer(brokerList, longship_topic)
 	}()
 
 	// Khởi chạy HTTP server trong một goroutine
@@ -90,7 +85,7 @@ func main() {
 		grpc.RunServer(os.Getenv("GRPC_URL"))
 	}()
 
-	// Đợi cho cả hai server kết thúc
+	// Đợi cho tất cả server kết thúc
 	wg.Wait()
 }
 
@@ -134,21 +129,4 @@ func connectSQLite() {
 		os.Exit(1)
 	}
 	log.Println("Connected with sqlite database!")
-}
-
-func connectZeebeClient() {
-	if err := ZBWorkflow.ConnectZeebeEngine(); err != nil {
-		log.Print(err)
-		os.Exit(1)
-	}
-	log.Println("Zeebe workflow package connected with zeebe!")
-	if err := ZBMessage.ConnectZeebeEngine(); err != nil {
-		log.Print(err)
-		os.Exit(1)
-	}
-	log.Println("Zeebe message package connected with zeebe!")
-	// Run Zebee service
-	ZBWorker.RunOrderLongShip()
-	ZBWorker.RunOrderShortShip()
-	ZBWorker.RunLongShipFinish()
 }
