@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+// Attention: Preference from where you protoc command
+import "proto_source/workflow_variable.proto";
+
+package pb;
+
+option go_package = ".;pb"; 
+
+service StateScemService {
+  rpc DeployWorkflow(DeployWorkflowRequest) returns (DeployWorkflowlResponse) {}
+  rpc CreateWorkflowInstance(CreateWorkflowInstanceRequest) returns (CreateWorkflowInstanceResponse) {}
+}
+
+// DeployWorkflow
+
+message WorkflowModel {
+  string WorkflowProcessID = 1 [json_name="workflow_process_id"];
+  int32 WorkflowVersion = 2 [json_name="workflow_version"];
+  string WorkflowKey = 3[json_name="workflow_key"];
+  int32 Step = 4 [json_name="step"];
+  int32 Type = 5 [json_name="type"];
+  string Name = 6 [json_name="name"];
+  string MappingName = 7 [json_name="mapping_name"];
+  int32 NextStep1 = 8 [json_name="next_step_1"];
+  int32 NextStep2 = 9 [json_name="next_step_2"];
+  int32 ServiceRetry = 10 [json_name="service_retry"];
+  string MessageCorrelationName = 11 [json_name="message_correlation_name"];
+}
+
+message DeployWorkflowRequest {
+  repeated WorkflowModel WorkflowModelList = 1 [json_name="workflow_model_list"];
+}
+
+message DeployWorkflowlResponse {
+  string WorkflowKey = 1 [json_name="workflow_key"];
+  bool Ok = 2 [json_name="ok"]; 
+}
+
+// CreateWorkflowInstance
+
+message CreateWorkflowInstanceRequest {
+  string WorkflowProcessID = 1 [json_name="workflow_process_id"];
+  pb.WorkflowVariable WorkflowVariableList = 2 [json_name="workflow_variable_list"];
+}
+
+message CreateWorkflowInstanceResponse {
+  string WorkflowKey = 1 [json_name="workflow_key"];
+  int32 WorkflowInstanceID = 2 [json_name="workflow_instance_id"];
+  bool Ok = 3 [json_name="ok"]; 
+}

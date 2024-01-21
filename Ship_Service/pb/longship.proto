@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package Ship;
+option go_package = ".;pb"; 
+service LongShip {
+    rpc CreateLongShipFromVRP(PackageListResult) returns (LongShipResponse) {}
+}
+
+message PackageListResult {
+  map<int32, PackageItems> package_list_result = 1;
+}
+
+message PackageItems {
+  repeated string id = 1;
+}
+message LongShipResponse {
+    bool ok = 1;
+    string response =2;
+}
