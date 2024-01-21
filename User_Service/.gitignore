@@ -3,4 +3,4 @@
 /vendor
 db
 storage/private/qrcode
-storage/public
+# storage/public
