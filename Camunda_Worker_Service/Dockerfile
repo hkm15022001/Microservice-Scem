@@ -14,8 +14,6 @@ RUN apk update && apk add --no-cache gcc libc-dev
 WORKDIR /storage/private/zeebe
 COPY ./storage/private/zeebe .
 
-WORKDIR /storage/public/upload/images
-COPY ./storage/public/upload/images .
 
 # Create necessary directories
 WORKDIR /build
