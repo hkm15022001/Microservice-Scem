@@ -12,6 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/hkm15022001/Supply-Chain-Event-Management/api/kafka"
 	"github.com/hkm15022001/Supply-Chain-Event-Management/internal/model"
 	"golang.org/x/sync/errgroup"
 	"gopkg.in/validator.v2"
@@ -134,7 +135,7 @@ func CreateOrderFormData(c *gin.Context) {
 
 	// Get long ship list
 	g.Go(func() error {
-		if err := db.Model(&model.LongShip{}).Order("id asc").Find(&longShips, "finished is ? and estimated_time_of_departure > ?", false, time.Now().Unix()).Error; err != nil {
+		if err := db.Model(&model.LongShip{}).Order("id asc").Find(&longShips, "finished = ? and estimated_time_of_departure > ?", false, time.Now().Unix()).Error; err != nil {
 			return err
 		}
 		return nil
@@ -142,7 +143,7 @@ func CreateOrderFormData(c *gin.Context) {
 
 	// Calculate total price and Create order ID base on Time
 	g.Go(func() error {
-		if err := db.Where("same_city is ?", false).Order("id asc").Find(&transportTypes).Error; err != nil {
+		if err := db.Where("same_city = ?", false).Order("id asc").Find(&transportTypes).Error; err != nil {
 			return err
 		}
 		return nil
@@ -256,6 +257,10 @@ func CreateOrderInfoHandler(c *gin.Context) {
 	if err := g.Wait(); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
+	}
+	//publish to kafka
+	if orderInfo.UseLongShip == true && orderInfo.LongShipID == 0 {
+		kafka.ProduceMessage("order-topic", orderInfo)
 	}
 
 	// Create order info

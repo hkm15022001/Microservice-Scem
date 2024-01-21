@@ -24,6 +24,7 @@ func RunLongShipFinish() {
 }
 
 func handleJobLongShipFinish(client worker.JobClient, job entities.Job) {
+	log.Print("Start job LongshipFinish")
 	jobKey := job.GetKey()
 
 	variables, err := job.GetVariablesAsMap()

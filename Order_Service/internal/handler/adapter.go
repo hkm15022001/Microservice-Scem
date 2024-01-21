@@ -201,7 +201,107 @@ func createDefaultEmployee() error {
 	if err := db.Create(userAuth).Error; err != nil {
 		return err
 	}
-	employee = &model.Employee{UserAuthID: userAuth.ID, Name: "Tuan", Age: 37, Phone: 776664993, Gender: "male", Address: "21 Nhat Tao", IdentityCard: "17687t562765786", EmployeeTypeID: 3, Avatar: "image3.jpg", DeliveryLocationID: 6}
+	employee = &model.Employee{UserAuthID: userAuth.ID, Name: "Hai", Age: 37, Phone: 776664993, Gender: "male", Address: "21 Nhat Tao", IdentityCard: "17687t562765786", EmployeeTypeID: 3, Avatar: "image3.jpg", DeliveryLocationID: 16}
+	if err := db.Create(employee).Error; err != nil {
+		return err
+	}
+	userAuth.EmployeeID = employee.ID
+	if err := db.Model(&userAuth).Updates(&userAuth).Error; err != nil {
+		return err
+	}
+	userAuth = &model.UserAuthenticate{Email: "deliverystaff1@gmail.com", Password: "12345678"}
+	if err := db.Create(userAuth).Error; err != nil {
+		return err
+	}
+	employee = &model.Employee{UserAuthID: userAuth.ID, Name: "Tuan", Age: 37, Phone: 776664993, Gender: "male", Address: "21 Nhat Tao", IdentityCard: "17687t562765786", EmployeeTypeID: 3, Avatar: "image3.jpg", DeliveryLocationID: 16}
+	if err := db.Create(employee).Error; err != nil {
+		return err
+	}
+	userAuth.EmployeeID = employee.ID
+	if err := db.Model(&userAuth).Updates(&userAuth).Error; err != nil {
+		return err
+	}
+	userAuth = &model.UserAuthenticate{Email: "deliverystaff3@gmail.com", Password: "12345678"}
+	if err := db.Create(userAuth).Error; err != nil {
+		return err
+	}
+	employee = &model.Employee{UserAuthID: userAuth.ID, Name: "Van", Age: 37, Phone: 776664993, Gender: "male", Address: "21 Nhat Tao", IdentityCard: "17687t562765786", EmployeeTypeID: 3, Avatar: "image3.jpg", DeliveryLocationID: 18}
+	if err := db.Create(employee).Error; err != nil {
+		return err
+	}
+	userAuth.EmployeeID = employee.ID
+	if err := db.Model(&userAuth).Updates(&userAuth).Error; err != nil {
+		return err
+	}
+
+	userAuth = &model.UserAuthenticate{Email: "deliverystaff4@gmail.com", Password: "12345678"}
+	if err := db.Create(userAuth).Error; err != nil {
+		return err
+	}
+	employee = &model.Employee{UserAuthID: userAuth.ID, Name: "Tai", Age: 37, Phone: 776664993, Gender: "male", Address: "21 Nhat Tao", IdentityCard: "17687t562765786", EmployeeTypeID: 3, Avatar: "image3.jpg", DeliveryLocationID: 14}
+	if err := db.Create(employee).Error; err != nil {
+		return err
+	}
+	userAuth.EmployeeID = employee.ID
+	if err := db.Model(&userAuth).Updates(&userAuth).Error; err != nil {
+		return err
+	}
+
+	userAuth = &model.UserAuthenticate{Email: "deliverystaff5@gmail.com", Password: "12345678"}
+	if err := db.Create(userAuth).Error; err != nil {
+		return err
+	}
+	employee = &model.Employee{UserAuthID: userAuth.ID, Name: "cuong", Age: 37, Phone: 776664993, Gender: "male", Address: "21 Nhat Tao", IdentityCard: "17687t562765786", EmployeeTypeID: 3, Avatar: "image3.jpg", DeliveryLocationID: 17}
+	if err := db.Create(employee).Error; err != nil {
+		return err
+	}
+	userAuth.EmployeeID = employee.ID
+	if err := db.Model(&userAuth).Updates(&userAuth).Error; err != nil {
+		return err
+	}
+
+	userAuth = &model.UserAuthenticate{Email: "deliverystaff6@gmail.com", Password: "12345678"}
+	if err := db.Create(userAuth).Error; err != nil {
+		return err
+	}
+	employee = &model.Employee{UserAuthID: userAuth.ID, Name: "Nam", Age: 37, Phone: 776664993, Gender: "male", Address: "21 Nhat Tao", IdentityCard: "17687t562765786", EmployeeTypeID: 3, Avatar: "image3.jpg", DeliveryLocationID: 18}
+	if err := db.Create(employee).Error; err != nil {
+		return err
+	}
+	userAuth.EmployeeID = employee.ID
+	if err := db.Model(&userAuth).Updates(&userAuth).Error; err != nil {
+		return err
+	}
+	userAuth = &model.UserAuthenticate{Email: "deliverystaff7@gmail.com", Password: "12345678"}
+	if err := db.Create(userAuth).Error; err != nil {
+		return err
+	}
+	employee = &model.Employee{UserAuthID: userAuth.ID, Name: "Tai", Age: 37, Phone: 776664993, Gender: "male", Address: "21 Nhat Tao", IdentityCard: "17687t562765786", EmployeeTypeID: 3, Avatar: "image3.jpg", DeliveryLocationID: 19}
+	if err := db.Create(employee).Error; err != nil {
+		return err
+	}
+	userAuth.EmployeeID = employee.ID
+	if err := db.Model(&userAuth).Updates(&userAuth).Error; err != nil {
+		return err
+	}
+	userAuth = &model.UserAuthenticate{Email: "deliverystaff8@gmail.com", Password: "12345678"}
+	if err := db.Create(userAuth).Error; err != nil {
+		return err
+	}
+	employee = &model.Employee{UserAuthID: userAuth.ID, Name: "Tai", Age: 37, Phone: 776664993, Gender: "male", Address: "21 Nhat Tao", IdentityCard: "17687t562765786", EmployeeTypeID: 3, Avatar: "image3.jpg", DeliveryLocationID: 21}
+	if err := db.Create(employee).Error; err != nil {
+		return err
+	}
+	userAuth.EmployeeID = employee.ID
+	if err := db.Model(&userAuth).Updates(&userAuth).Error; err != nil {
+		return err
+	}
+
+	userAuth = &model.UserAuthenticate{Email: "deliverystaff9@gmail.com", Password: "12345678"}
+	if err := db.Create(userAuth).Error; err != nil {
+		return err
+	}
+	employee = &model.Employee{UserAuthID: userAuth.ID, Name: "Mai", Age: 37, Phone: 776664993, Gender: "male", Address: "21 Nhat Tao", IdentityCard: "17687t562765786", EmployeeTypeID: 3, Avatar: "image3.jpg", DeliveryLocationID: 22}
 	if err := db.Create(employee).Error; err != nil {
 		return err
 	}
@@ -572,33 +672,33 @@ func createExampleOrder2() error {
 
 func createOrderVoucher() error {
 	orderVoucher := &model.OrderVoucher{
-		Title:     "Khuyen mai ngay he 1",
-		Content:   "Tan huong nhung ngay he sang khoang voi Move nice VN nha. Giam gia 30.000 tu hom nay den cuoi thang.",
-		StartDate: 1611390576, EndDate: 1619390576, Discount: 30000,
+		Title:     "Khuyen mai ngay xuan 1",
+		Content:   "Tan huong nhung ngay xuan nha. Giam gia 30.000 tu hom nay den cuoi thang.",
+		StartDate: 1705679441, EndDate: 1706629841, Discount: 30000,
 	}
 	if err := db.Create(orderVoucher).Error; err != nil {
 		return err
 	}
 	orderVoucher = &model.OrderVoucher{
 		Title:     "Khuyen mai ngay xuan 2",
-		Content:   "Tan huong nhung ngay xuan mat me voi Move nice VN nha. Giam gia 50.000 tu hom nay den cuoi thang.",
-		StartDate: 1615690576, EndDate: 1619390576, Discount: 50000,
+		Content:   "Tan huong nhung ngay xuan mat me. Giam gia 50.000 tu hom nay den cuoi thang.",
+		StartDate: 1705679441, EndDate: 1706629841, Discount: 50000,
 	}
 	if err := db.Create(orderVoucher).Error; err != nil {
 		return err
 	}
 	orderVoucher = &model.OrderVoucher{
 		Title:     "Khuyen mai ngay dong 3",
-		Content:   "Tan huong nhung ngay xuan mat me voi Move nice VN nha. Giam gia 70.000 tu hom nay den cuoi thang.",
-		StartDate: 1612390576, EndDate: 1620390576, Discount: 70000,
+		Content:   "Tan huong nhung ngay dong lanh gia . Giam gia 70.000 tu hom nay den cuoi thang.",
+		StartDate: 1705679441, EndDate: 1706975441, Discount: 70000,
 	}
 	if err := db.Create(orderVoucher).Error; err != nil {
 		return err
 	}
 	orderVoucher = &model.OrderVoucher{
 		Title:     "Khuyen mai ngay phu nu 5",
-		Content:   "Chuc mung ngay quoc te phu nu voi Move nice VN nha. Giam gia 100.000 tu hom nay den cuoi thang.",
-		StartDate: 1612390576, EndDate: 1620390576, Discount: 100000,
+		Content:   "Chuc mung ngay quoc te phu nu nha. Giam gia 100.000 tu hom nay den cuoi thang.",
+		StartDate: 1705679441, EndDate: 1706975441, Discount: 100000,
 	}
 	if err := db.Create(orderVoucher).Error; err != nil {
 		return err

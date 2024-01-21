@@ -86,7 +86,7 @@ type DeliveryLocation struct {
 	// District  string  `json:"district" validate:"nonzero"`
 	Latitude  float64 `json:"latitude" validate:"nonzero"`
 	Longitude float64 `json:"longitude" validate:"nonzero"`
-	AreaCode  string  `json:"area_code" validate:"nonzero"`
+	AreaCode  string  `json:"area_code" `
 	Region    string  `json:"region"`
 }
 

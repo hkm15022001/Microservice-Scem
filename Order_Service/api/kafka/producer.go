@@ -1,9 +1,9 @@
 package kafka
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/Shopify/sarama"
 )
@@ -26,10 +26,14 @@ func CloseProducer() {
 	}
 }
 
-func ProduceMessage(topic string, message string) {
+func ProduceMessage(topic string, orderInfo interface{}) {
+	orderInfoJson, err := json.Marshal(orderInfo)
+	if err != nil {
+		log.Fatalf("Failed to marshal JSON: %v", err)
+	}
 	msg := &sarama.ProducerMessage{
 		Topic: topic,
-		Value: sarama.StringEncoder(message),
+		Value: sarama.StringEncoder(orderInfoJson),
 	}
 	producer.Input() <- msg
 	fmt.Println("Message sent")
@@ -42,13 +46,7 @@ func StartProducer(brokerList []string, topic string) {
 	}
 	defer CloseProducer()
 
-	log.Println("Connected to Kafka")
-	go func() {
-		for {
-			ProduceMessage(topic, "Hello from Golang!")
-			time.Sleep(10 * time.Second)
-		}
-	}()
+	log.Println("Connected to Kafka-producer")
 	select {}
 }
 

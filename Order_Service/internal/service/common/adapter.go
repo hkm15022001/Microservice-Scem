@@ -27,7 +27,7 @@ func MappingGormDBConnection(_db *gorm.DB) {
 // GetOrderLongShipList function
 func GetOrderLongShipList(longShipID uint) ([]model.OrderLongShip, error) {
 	orderLongShips := []model.OrderLongShip{}
-	if err := db.Where("long_ship_id == ?", longShipID).Order("id asc").Find(&orderLongShips).Error; err != nil {
+	if err := db.Where("long_ship_id = ?", longShipID).Order("id asc").Find(&orderLongShips).Error; err != nil {
 		return nil, err
 	}
 	return orderLongShips, nil
@@ -126,6 +126,7 @@ func CreateOrderShortShip(orderID uint) (uint, error) {
 	if length > 1 {
 		length = length - 1
 	}
+	log.Print("length of delivery staff short ship in location:", length)
 	index := rand.Intn(length)
 	orderShortShip.ShipperID = employeeList[index].ID
 	orderShortShip.CustomerSendID = orderInfoForShipment.CustomerSendID
@@ -240,6 +241,7 @@ func UpdateOrderLongShipGRPC(orderId uint, longShipId uint) (uint, error) {
 	}
 	orderPay, err := getOrderPayOrNotFoundByOrderID(orderId)
 	if err != nil {
+		log.Print("This OrderId have not been pay")
 		return uint(0), err
 	}
 	// shipper_receive_money will be sent when using app
@@ -253,6 +255,7 @@ func UpdateOrderLongShipGRPC(orderId uint, longShipId uint) (uint, error) {
 	// Create workflow instance in zeebe
 	WorkflowKey, WorkflowInstanceKey, err := CreateWorkflowFullShipInstanceHandler(orderWorkflowData)
 	if err != nil {
+		log.Print("Error when create fullship workflow instance from plan service:", err)
 		return uint(0), err
 	}
 	orderWorkflowData.OrderPayID = orderPay.ID
