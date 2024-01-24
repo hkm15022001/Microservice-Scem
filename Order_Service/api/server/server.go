@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/hkm15022001/Supply-Chain-Event-Management/api/middleware"
 	"github.com/hkm15022001/Supply-Chain-Event-Management/api/router"
@@ -58,6 +59,12 @@ func RunServer() {
 
 func webRouter() http.Handler {
 	e := gin.Default()
+
+	e.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowCredentials: true,
+	}))
 
 	e.Static("/scem-order/api/images", os.Getenv("IMAGE_FILE_PATH"))
 	e.Static("/scem-order/api/qrcode", os.Getenv("QR_CODE_FILE_PATH"))

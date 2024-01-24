@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/hkm15022001/Supply-Chain-Event-Management/api/middleware"
 	"golang.org/x/sync/errgroup"
@@ -60,6 +61,12 @@ func webRouter() http.Handler {
 
 	// Set a lower memory limit for multipart forms (default is 32 MiB)
 	e.MaxMultipartMemory = 8 << 20 // 8 MiB
+
+	e.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowCredentials: true,
+	}))
 
 	api := e.Group("/scem-ship/api")
 	// Active web auth
