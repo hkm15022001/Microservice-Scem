@@ -12,6 +12,9 @@ import (
 	"github.com/hkm15022001/Supply-Chain-Event-Management/internal/handler"
 	CommonService "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/common"
 	CommonMessage "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/common_message"
+	ZBMessage "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/zeebe/message"
+	ZBWorkflow "github.com/hkm15022001/Supply-Chain-Event-Management/internal/service/zeebe/workflow"
+
 	"github.com/joho/godotenv"
 )
 
@@ -60,6 +63,10 @@ func main() {
 	// 	os.Exit(1)
 	// }
 	// log.Print("Database refreshed!")
+
+	if os.Getenv("STATE_SERVICE") == "1" {
+		connectZeebeClient()
+	}
 
 	// WaitGroup để chờ cả hai server kết thúc
 	var wg sync.WaitGroup
@@ -134,4 +141,17 @@ func connectSQLite() {
 		os.Exit(1)
 	}
 	log.Println("Connected with sqlite database!")
+}
+func connectZeebeClient() {
+	if err := ZBWorkflow.ConnectZeebeEngine(); err != nil {
+		log.Print(err)
+		os.Exit(1)
+	}
+	log.Println("Zeebe workflow package connected with zeebe!")
+	if err := ZBMessage.ConnectZeebeEngine(); err != nil {
+		log.Print(err)
+		os.Exit(1)
+	}
+	log.Println("Zeebe message package connected with zeebe!")
+
 }
