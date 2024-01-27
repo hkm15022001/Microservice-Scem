@@ -6,7 +6,6 @@ import (
 	"sync"
 
 	grpc "github.com/hkm15022001/Supply-Chain-Event-Management/api/grpc"
-	"github.com/hkm15022001/Supply-Chain-Event-Management/api/kafka"
 	// "github.com/hkm15022001/Supply-Chain-Event-Management/api/kafka"
 	"github.com/hkm15022001/Supply-Chain-Event-Management/api/middleware"
 	httpServer "github.com/hkm15022001/Supply-Chain-Event-Management/api/server"
@@ -60,12 +59,6 @@ func main() {
 	// WaitGroup để chờ cả hai server kết thúc
 	var wg sync.WaitGroup
 	wg.Add(2)
-	go func() {
-		defer wg.Done()
-		brokerList := []string{os.Getenv("KAFKA_BOOTSTRAP_SERVER")}
-		topic := "order-topic"
-		kafka.StartProducer(brokerList, topic)
-	}()
 
 	// Khởi chạy HTTP server trong một goroutine
 	go func() {
