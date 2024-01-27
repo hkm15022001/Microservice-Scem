@@ -60,11 +60,12 @@ func RunServer() {
 func webRouter() http.Handler {
 	e := gin.Default()
 
-	e.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-		AllowCredentials: true,
-	}))
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"*"} // Thay đổi địa chỉ này thành địa chỉ của trang web của bạn
+	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
+	config.AllowCredentials = true
+
+	e.Use(cors.New(config))
 
 	e.Static("/scem-order/api/images", os.Getenv("IMAGE_FILE_PATH"))
 	e.Static("/scem-order/api/qrcode", os.Getenv("QR_CODE_FILE_PATH"))
@@ -72,6 +73,7 @@ func webRouter() http.Handler {
 	e.MaxMultipartMemory = 8 << 20 // 8 MiB
 
 	api := e.Group("/scem-order/api")
+
 	router.WebAuthRoutes(api)
 	// Active web auth
 	if os.Getenv("RUN_WEB_AUTH") == "yes" {
