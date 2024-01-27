@@ -11,8 +11,8 @@ ENV GO111MODULE=on \
 # Install gcc and related build tools
 RUN apk update && apk add --no-cache gcc libc-dev
 
-WORKDIR /storage/private/zeebe
-COPY ./storage/private/zeebe .
+WORKDIR /storage/private/
+COPY ./storage/private/ .
 
 WORKDIR /storage/public/upload/images
 COPY ./storage/public/upload/images .
