@@ -36,7 +36,7 @@ func createCustomerNotificationLongShipHandler(longShipID uint, titleIndex int) 
 	}
 	customerNotification := &model.CustomerNotification{Title: title}
 	orderLongShips := []model.OrderLongShip{}
-	if err := db.Where("long_ship_id == ?", longShipID).Find(&orderLongShips).Error; err != nil {
+	if err := db.Where("long_ship_id = ?", longShipID).Find(&orderLongShips).Error; err != nil {
 		return err
 	}
 

@@ -207,7 +207,7 @@ func UpdateLongShipFormData(c *gin.Context) {
 		return
 	}
 	transportTypes := []model.TransportType{}
-	db.Where("same_city == ?", false).Order("id asc").Find(&transportTypes)
+	db.Where("same_city = ?", false).Order("id asc").Find(&transportTypes)
 	c.JSON(http.StatusOK, gin.H{
 		"long_ship_info":      &longShip,
 		"transport_type_list": &transportTypes,

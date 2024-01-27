@@ -77,8 +77,8 @@ func webRouter() http.Handler {
 
 func appRouter() http.Handler {
 	e := gin.Default()
-	e.Static("/scem-ship/api/images", os.Getenv("IMAGE_FILE_PATH"))
-	api := e.Group("/scem-ship/api")
+	e.Static("app/scem-ship/api/images", os.Getenv("IMAGE_FILE_PATH"))
+	api := e.Group("app/scem-ship/api")
 	router.AppOrderShipRoutes(api)
 	return e
 }
