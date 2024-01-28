@@ -3,6 +3,7 @@ package middleware
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -40,11 +41,13 @@ func CreateAppTokenRedis(c *gin.Context, userAuthID uint, frontEndContext map[st
 
 	ts, err := createToken(userAuthID)
 	if err != nil {
+		log.Print("StatusUnprocessableEntity: 1")
 		c.JSON(http.StatusUnprocessableEntity, err.Error())
 		return
 	}
 	saveErr := createAuth(userAuthID, ts)
 	if saveErr != nil {
+		log.Print("StatusUnprocessableEntity: 2")
 		c.JSON(http.StatusUnprocessableEntity, saveErr.Error())
 	}
 	tokens := map[string]string{

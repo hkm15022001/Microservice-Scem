@@ -1,6 +1,7 @@
 package router
 
 import (
+	"log"
 	"net/http"
 	"os"
 
@@ -62,15 +63,18 @@ func AppAuthRedisRoutes(rg *gin.RouterGroup) {
 func appLoginHandlerRedis(c *gin.Context) {
 	var user loginRequest
 	if err := c.ShouldBindJSON(&user); err != nil {
+		log.Print("Can't pasre from JSON")
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 	if err := validator.Validate(&user); err != nil {
+		log.Print("Failed when validate email+pass")
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 	frontEndContext, userAuthID, validated := handler.ValidateUserAuth(user.Email, user.Password)
 	if validated == false {
+		log.Print("Pass or User is wrong")
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
