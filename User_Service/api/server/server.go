@@ -76,13 +76,13 @@ func webRouter() http.Handler {
 
 func appRouter() http.Handler {
 	e := gin.Default()
-	e.Static("app/scem-user/api/images", os.Getenv("IMAGE_FILE_PATH"))
+	e.Static("/app/scem-user/api/images", os.Getenv("IMAGE_FILE_PATH"))
 
-	fcmAuth := e.Group("app/scem-user/fcm-auth")
+	fcmAuth := e.Group("/app/scem-user/fcm-auth")
 	router.AppFMCToken(fcmAuth)
 
-	api := e.Group("app/scem-user/api")
-	appAuth := e.Group("app/scem-user/app-auth")
+	api := e.Group("/app/scem-user/api")
+	appAuth := e.Group("/app/scem-user/app-auth")
 
 	// Select app auth database
 	if os.Getenv("RUN_APP_AUTH") == "redis" {
