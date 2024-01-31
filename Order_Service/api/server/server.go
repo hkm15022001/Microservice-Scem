@@ -58,7 +58,7 @@ func RunServer() {
 
 func webRouter() http.Handler {
 	e := gin.Default()
-
+	e.Use(CORSMiddleware())
 	e.Static("/scem-order/api/images", os.Getenv("IMAGE_FILE_PATH"))
 	e.Static("/scem-order/api/qrcode", os.Getenv("QR_CODE_FILE_PATH"))
 	// Set a lower memory limit for multipart forms (default is 32 MiB)
@@ -97,4 +97,21 @@ func appRouter() http.Handler {
 	}
 	router.AppOrderRoutes(api)
 	return e
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }
